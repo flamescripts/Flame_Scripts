@@ -2,10 +2,10 @@
 ## 01/30/19
 ##
 ## Name: CentOS_Wacom_fix.sh
-## Desc: Disable Wacom Tablet gesture touch, touch ring and express buttons
+## Desc: Disable Wacom Multi-Touch, ExpressKeys and Finger Wheel
 ## with minimal user interaction
 ##
-## Always Current:
+## Always Current Version:
 ##	https://github.com/flamescripts/Flame_Scripts
 ##
 ## Disclamer: This is not an official Autodesk certified script.  I nor
