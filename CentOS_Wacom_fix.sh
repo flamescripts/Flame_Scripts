@@ -13,9 +13,12 @@
 ## loss that may ocurr from using this script.  Use at your own risk.
 ## Intended for providing guidance only.
 ##
-## Test Models: Intuos Pro Medium (PTH-660) and Intuos5 Touch Medium (PTH-650)
+## Test Models: Intuos Pro Medium, Intuos Pro Large, Intuos5 Touch Medium
 ## Test OS: Autodesk CentOS 7.2 ISO 1511 Rev 003 using ks.cfg
 ##
+## IMPORTANT:  If using script remotely via ssh, be sure to export the DISPLAY
+## ex: export DISPLAY=:0
+## 
 ##########################################################################
 
 
