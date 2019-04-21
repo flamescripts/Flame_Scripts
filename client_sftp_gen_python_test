@@ -1,0 +1,42 @@
+#!/bin/bash
+#
+# Quick Script to Create SFTP users
+#
+#######################################
+
+# variables
+path='/SAN/ISOLATED/INSECURE/CLIENT_FTPS'
+ip=$(dig +short myip.opendns.com @resolver1.opendns.com)
+
+## USER INPUT
+echo 'Hello, enter client login name (underscores for spaces)'
+read username
+
+echo 'Enter comment for this account'
+read comment
+
+## PASSWORD GENERATION
+password=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 13)
+
+## USER CREATION
+useradd -g clients -s /sbin/nologin -m -d $path/$username $username -c "$comment"
+echo "$password" | passwd "$username"  --stdin
+chown root:root $path/$username
+chmod 755 $path/$username
+
+## DATA FOR USER
+clear
+echo ''
+echo 'Copy & Paste to Email'
+echo ''
+echo '#######################'
+echo 'Username is: '$username
+echo 'Password is: '$password
+echo ''
+echo 'IP Address is: '$ip
+echo 'Protocol is: SFTP'
+echo '#######################'
+echo ''
+echo 'Copy postings to: '$path/$username
+echo ''
+echo 'Comment: '$comment
