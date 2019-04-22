@@ -39,7 +39,7 @@ chown root:root $path/$username
 chmod 755 $path/$username
 
 ## Save Data
-echo 'Username: '$username >> $bupath/$username.txt
+echo 'Username: '$username > $bupath/$username.txt
 echo 'Password: '$password >> $bupath/$username.txt
 echo 'Home: '$path/$username >> $bupath/$username.txt
 echo 'Comment: '$comment >> $bupath/$username.txt
