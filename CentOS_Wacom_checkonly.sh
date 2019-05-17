@@ -29,6 +29,13 @@ RING=( AbsWheelUp AbsWheelDown AbsWheel2Up AbsWheel2Down RelWheelUp RelWheelDown
 # Reset console
 clear
 
+# SSH DISPLAY
+if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
+        echo "It looks like you are using a remote shell"
+        echo "Please export display if errors occur: '${bold}export DISPLAY=:0'"
+        read -n 1 -s -r -p "Press any key to continue"
+fi
+
 # Model IDs for reference
 echo
 echo 'PAD:' $PAD
