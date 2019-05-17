@@ -22,7 +22,8 @@
 ##########################################################################
 
 # Variables
-PAD=`xsetwacom --list devices | awk '/PAD/||/pad/||/Pad/' | awk -F "id:" '{print $1}' | cut -d " " -f1-5`
+PAD=`xsetwacom --list devices | awk '/PAD/||/pad/||/Pad/' | awk -F "id:" '{print $1}' | cut -d " " -f1
+-6  | sed -e 's/[[:space:]]*$//'`
 FINGER=`xsetwacom --list devices | awk '/FINGER/||/finger/||/Finger/' | awk -F "id:" '{print $1}' | cut -d " " -f1-6`
 RING=( AbsWheelUp AbsWheelDown AbsWheel2Up AbsWheel2Down RelWheelUp RelWheelDown )
 
