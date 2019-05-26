@@ -86,6 +86,9 @@ xsetwacom -s get "$TOUCH" all
 xsetwacom -s get "$STYLUS" all
 xsetwacom -s get "$ERASER" all
 xsetwacom -s get "$CURSOR" all
+libwacom-list-local-devices
+xinput list "$PAD"
+rpm -qa |grep -i wacom
 
 echo
 echo 'Script Complete'
