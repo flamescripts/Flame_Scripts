@@ -6,7 +6,7 @@
 ## with minimal user interaction
 ##
 ## Always Current Version:
-##	https://github.com/flamescripts/Flame_Scripts
+##      https://github.com/flamescripts/Flame_Scripts
 ##
 ## Disclamer: This is not an official Autodesk certified script.  I nor
 ## Autodesk are responsible for any use, misuse, unintened results or data
@@ -18,14 +18,18 @@
 ##
 ## IMPORTANT:  If using script remotely via ssh, be sure to export the DISPLAY
 ## ex: export DISPLAY=:0
-## 
+##
 ##########################################################################
 
 
 # Variables
-PAD=`xsetwacom --list devices | awk '/PAD/||/pad/||/Pad/' | awk -F "id:" '{print $1}' | cut -d " " -f1-6`
-FINGER=`xsetwacom --list devices | awk '/FINGER/||/finger/||/Finger/' | awk -F "id:" '{print $1}' | cut -d " " -f1-6`
-RING=( AbsWheelUp AbsWheelDown AbsWheel2Up AbsWheel2Down RelWheelUp RelWheelDown )
+PAD=`xsetwacom --list devices | awk '/PAD/||/pad/||/Pad/' | awk -F "id:" '{print $1}' | cut -d " " -f1-8  | sed -e 's/[[:space:]]*$//'`
+TOUCH=`xsetwacom --list devices | awk '/FINGER/||/finger/||/Finger/||/TOUCH/||/touch/||/Touch/' | awk -F "id:" '{print $1}' | cut -d " " -f1-8  | sed -e 's/[[:space:]]*$//'`
+STYLUS=`xsetwacom --list devices | awk '/STYLUS/||/stylus/||/Stylus/' | awk -F "id:" '{print $1}' | cut -d " " -f1-8  | sed -e 's/[[:space:]]*$//'`
+CURSOR=`xsetwacom --list devices | awk '/CURSOR/||/cursor/||/Cursor/' | awk -F "id:" '{print $1}' | cut -d " " -f1-8  | sed -e 's/[[:space:]]*$//'`
+ERASER=`xsetwacom --list devices | awk '/ERASER/||/eraser/||/Eraser/' | awk -F "id:" '{print $1}' | cut -d " " -f1-8  | sed -e 's/[[:space:]]*$//'`
+RING=( AbsWheelUp AbsWheelDown AbsWheel2Up AbsWheel2Down RelWheelUp RelWheelDown StripLeftUp StripLeftDown StripRightUp StripRightDown )
+
 ZERO='button 0'
 ZEROALT='0'
 
@@ -34,16 +38,24 @@ clear
 
 # Model ID for reference
 echo
-echo 'Setting PAD:' $PAD
-echo 'Setting FINGER:' $FINGER
+echo 'PAD:   ' $PAD
+echo 'STYLUS:' $STYLUS
+echo 'ERASER:' $ERASER
+echo 'CURSOR:' $CURSOR
 
 # Turn off touch
-echo
-echo 'Turning touch off'
-xsetwacom set "$FINGER" TOUCH off
+if [[ $TOUCH ]]; then
+        echo 'TOUCH: ' $TOUCH
+        echo
+        echo '  Touch is currently turned:' `xsetwacom get "$TOUCH" TOUCH`
+        echo
+        echo 'Turning touch off'
+                xsetwacom set "$TOUCH" TOUCH off
+else
+        echo 'TOUCH:  no touch feature detected on this Wacom tablet'
+        echo
+fi
 
-# Verify changes correct for touch
-echo '  Touch is currently turned:' `xsetwacom get "$FINGER" TOUCH`
 
 # Turn off ring
 echo
