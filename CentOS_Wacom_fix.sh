@@ -1,19 +1,21 @@
 #!/bin/bash
-## 01/30/19
+## 09/03/19
 ##
 ## Name: CentOS_Wacom_fix.sh
 ## Desc: Disable Wacom Multi-Touch, ExpressKeys and Finger Wheel
-## with minimal user interaction
+## with minimal user interaction.  Add pointer from rc.local to persist
+## after reboot.  Workaround available by request.
 ##
 ## Always Current Version:
 ##      https://github.com/flamescripts/Flame_Scripts
 ##
-## Disclamer: This is not an official Autodesk certified script.  I nor
-## Autodesk are responsible for any use, misuse, unintened results or data
-## loss that may ocurr from using this script.  Use at your own risk.
-## Intended for providing guidance only.
+## Disclamer: This is not an official Autodesk certified script.  Neither the
+## author nor Autodesk are responsible for any use, misuse, unintened results 
+## or data loss that may ocurr from using this script.
 ##
-## Test Models: Intuos Pro Medium, Intuos Pro Large, Intuos5 Touch Medium
+## Use at your own risk.  Script intended for providing guidance only.
+##
+## Test Models: Intuos 4, Intuos Pro Medium, Intuos Pro Large, Intuos5 Touch Medium
 ## Test OS: Autodesk CentOS 7.2 ISO 1511 Rev 003 using ks.cfg
 ##
 ## IMPORTANT:  If using script remotely via ssh, be sure to export the DISPLAY
@@ -33,12 +35,23 @@ RING=( AbsWheelUp AbsWheelDown AbsWheel2Up AbsWheel2Down RelWheelUp RelWheelDown
 ZERO='button 0'
 ZEROALT='0'
 
+
+# SSH DISPLAY
+if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
+        clear
+        echo "It looks like you are using a remote shell"
+        echo "You MUST export display if errors occur: '${bold}export DISPLAY=:0'"
+        read -n 1 -s -r -p "Press any key to continue"
+fi
+
+
 # Reset console
 clear
 
-# Model ID for reference
-echo
-echo 'PAD:   ' $PAD
+
+# Model IDs for reference
+echo 'CentOS Wacom fix script'
+echo 'PAD:' $PAD
 echo 'STYLUS:' $STYLUS
 echo 'ERASER:' $ERASER
 echo 'CURSOR:' $CURSOR
@@ -64,7 +77,7 @@ for r in "${RING[@]}"
 do
         xsetwacom set "$PAD" "$r" "$ZERO"
         # Verify changes correct for ring - Comment out to silence
-        echo "  $r"  `xsetwacom get "$PAD" "$r"`
+        echo "  *$r:"  `xsetwacom get "$PAD" "$r"`
 done
 
 # Turn off expresskeys 1-3, 8-13
@@ -74,11 +87,39 @@ for e in {1..3} {8..13}
 do
         xsetwacom set "$PAD" Button "$e" "$ZERO"
         #Verify changes correct for buttons  - Comment out to silence
-        echo "  $e" `xsetwacom get "$PAD" Button "$e"`
+        echo "  *ExpressKey #$e:" `xsetwacom get "$PAD" Button "$e"`
 done
 
 echo
-echo 'Script Complete'
+echo
+
+
+## Get user input for more Wacom info or exit
+
+echo -n "Press any key to display extra Wacom data for diagnostics or just press Esc to exit"
+
+while read -r -n 1 response; do
+
+if [[ $response = $'\e' ]]; then
+        echo
+        echo 'Script Complete'
+        break;
+else
+        echo
+        xsetwacom -s get "$PAD" all
+        xsetwacom -s get "$TOUCH" all
+        xsetwacom -s get "$STYLUS" all
+        xsetwacom -s get "$ERASER" all
+        xsetwacom -s get "$CURSOR" all
+        libwacom-list-local-devices
+        xinput list "$PAD"
+        rpm -qa |grep -i wacom
+        echo
+        echo 'Script Complete'
+        break;
+fi
+done
 
 # Goodbye
+
 exit
