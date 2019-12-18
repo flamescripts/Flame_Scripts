@@ -95,6 +95,7 @@ echo
 
 
 ## Get user input for more Wacom info or exit
+## Comment out if automating
 
 echo -n "Press any key to display extra Wacom data for diagnostics or just press Esc to exit"
 
