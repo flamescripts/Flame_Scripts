@@ -17,19 +17,21 @@
 ## ex: export DISPLAY=:0
 ##
 ## Installation:
+## 1) Create "Wacom-Hands" folder in /opt/Autodesk.
+## 2) Download and Copy 'CentOS_Wacom_Orientation.sh' to /opt/Autodesk/Wacom-Hands/'
+## 3) Download and Copy 'CentOS_Wacom_Orientation.png' to /opt/Autodesk/Wacom-Hands/'.
+## 4) Download and Copy 'CentOS_Wacom_Orientation.desktop' to Flame User's Desktop.
 ##
-## 1) Extract and copy "Wacom-Hands" folder to /opt/Autodesk.
-## -- If you place the "Wacom-Hands" folder in a different location, you must
-##    update the following 2 lines in "CentOS_Wacom_Orientation.desktop" or this 
-##    script will break.
+##  NOTE:
+##    If you place the files in a folder other than '/opt/Autodesk/Wacom-Hands/',
+##    you must update the following 2 lines in "CentOS_Wacom_Orientation.desktop" or 
+##    this script will break.
 ## --   EXAMPLE: Exec='/opt/Autodesk/Wacom-Hands/CentOS_Wacom_Orientation.sh'
 ## --   EXAMPLE: Icon='/opt/Autodesk/Wacom-Hands/CentOS_Wacom_Orientation.png'
 ##
-## 2) Copy CentOS_Wacom_Orientation.desktop to Flame User's Desktop.
-## 
 ## Usage:
 ##
-## Double Click the hands icons named Wacom Orientation on Desktop
+## Double Click the hands icons named Wacom Orientation on Flame User's Desktop.
 ## --Select 1 for Left-Handed Orientation
 ## --Select 2 for Right-Handed orientation
 ##
