@@ -12,14 +12,15 @@
 ## 
 ## Use at your own risk.  Script intended for providing guidance only. 
 ## 
-## IMPORTANT:  If using script remotely via ssh, be sure to export the DISPLAY 
-## ex: export DISPLAY=:0 
+## IMPORTANT:  If using script remotely via ssh for some reason, be sure to export the DISPLAY 
+## ex: export DISPLAY=:0 first
 ## 
 ## Installation: 
 ## 1) Create "Wacom-Hands" folder in /opt/Autodesk. 
 ## 2) Download and Copy 'CentOS_Wacom_Orientation.sh' to /opt/Autodesk/Wacom-Hands/' 
 ## 3) Download and Copy 'CentOS_Wacom_Orientation.png' to /opt/Autodesk/Wacom-Hands/'. 
-## 4) Download and Copy 'CentOS_Wacom_Orientation.desktop' to Flame User's Desktop. 
+## 4) Download and Copy 'CentOS_Wacom_Orientation.desktop' to Flame User's Desktop.
+## 5) Run locally as the CentOS user, do not use sudo or elevate to root.
 ## 
 ##  NOTE: 
 ##    If you place the files in a folder other than '/opt/Autodesk/Wacom-Hands/', 
@@ -49,8 +50,7 @@ REGULAR=$(tput sgr0)
 # SSH DISPLAY                                                                                                                                                                                                   
 if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then                                                                                                                                                              
         clear                                                                                                                                                                                                   
-        echo "It looks like you are using a ${BOLD}remote shell${REGULAR}, this script should be modified if you are automating to remove interactive portion."                                                 
-        echo "You MUST also export display if errors occur: '${BOLD}export DISPLAY=:0${REGULAR}'"                                                                                                               
+        echo "It looks like you are using a ${BOLD}remote shell${REGULAR} that is a bad idea."                                                 
         echo ''                                                                                                                                                                                                 
         read -n 1 -s -r -p "Press any key to continue"                                                                                                                                                          
 fi                                                                                                                                                                                                              
