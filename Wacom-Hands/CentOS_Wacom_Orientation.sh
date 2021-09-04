@@ -8,14 +8,14 @@
 ## 
 ## Disclamer: This is not an official Autodesk certified script.  Neither the 
 ## author nor Autodesk are responsible for any use, misuse, unintened results  
-## or data loss that may ocurr from using this script.
+## or data loss that may ocurr from using this script.  Use at your own risk.
+## Script intended for providing guidance only.  There may be better options
+## available.
 ##
 ## Script has only tested in CentOS 7.2, 7.4 and 7.6 ks versions from Flame
 ## System Requirements.  Since intended for multiple OS users on a system
 ## per request, orientation not active till login.  Script not needed for
-## CentOS 8.x.  GUI solution in OS settings for user. Use at your own risk.
-## Script intended for providing guidance only.  There may be better options
-## available.
+## CentOS 8.x.  GUI solution in OS settings for user. 
 ## 
 ## IMPORTANT:  This is meant to be run locally in the GUI by the end user.
 ##
