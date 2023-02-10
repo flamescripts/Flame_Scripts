@@ -37,7 +37,7 @@ else
     # Run strace on Flame pid until Flame exits
     while pgrep -x "flame" > /dev/null
     do
-        strace -f -p $(pidof flame)
+        strace -f -p $(/usr/sbin/pidof flame)
     done
 fi
 
