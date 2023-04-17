@@ -1,10 +1,11 @@
 #!/bin/bash
 #
-## 03/09/23
+## 04/17/23
 ##
 ## Name: Flame Project Archive Assist Tool
 ## Desc: Basic tool that will read the project list as seen by flame_archive and create/append
-## archives based on user input.
+## archives based on user input.  Archives and supporting files are placed in individual folders
+## based on the Flame project name.  Projects processed in succession.
 ##
 ##
 ## Always Current Version:
@@ -19,7 +20,7 @@
 ## Use at your own risk.  Script intended for providing guidance only.
 ## There is no support provided.  Caution is strongly advised.
 ##
-## Test OS: macOS 12.6.2 & Rocky 8.5
+## Test OS: macOS 12.6.2, 13.3.1 & Rocky 8.5
 ##
 ## USAGE: The variable 'ARCHIVEPATH' must be changed to avoid filling up a system
 ## drive.  Verify there is adequate space available on the destination.
@@ -54,15 +55,15 @@ else
     if [ ! -f "$ARCHIVEPATH" ]; then
       mkdir -m 777 -p "$ARCHIVEPATH"
     fi
-    > "$ARCHIVEPATH/_projectlist.txt"
+    truncate -s 0 "$ARCHIVEPATH/_projectlist.txt"
 
     ## GATHER PROJECT LIST
     $BINARY -l | awk '/Projects/{ f = 1; next } /Stopping/{ f = 0 } f' > "$ARCHIVEPATH/_projectlist.txt"
 
     ## SELECT PROJECT TO ARCHIVE FROM PROJECT LIST
-    while read -u 3 FLAMEPROJECT; do
+    while read -r -u 3 FLAMEPROJECT; do
       echo "Do you want to Archive the ${bold}${underline}$FLAMEPROJECT${normal} Flame project?:"
-      read -n 1 -p "${bold}Y${normal} for Yes, ${bold}N${normal} for No: " CONT
+      read -n 1 -r -p "${bold}Y${normal} for Yes, ${bold}N${normal} for No: " CONT
           if [[ $CONT =~ ^[Yy]$ ]]; then
           clear
           ## CHECK IF ARCHIVE EXISTS AND CREATE CONTAINER IF NOT
@@ -77,21 +78,21 @@ else
             $BINARY -f -F "$ARCHIVEFILE/$FLAMEPROJECT"
           fi
 
-          ## SELECT DESIRED ARCHIVE TYPE
+          ## SELECT DESIRED ARCHIVreE TYPE
           echo -e "\nPlease choose from the following options to complete the ${bold}${underline}$FLAMEPROJECT${normal} archive:"
-          echo "  Enter ${bold}(A)${normal} to Archive/Append to an ${bold}"Normal"${normal} archive."
-          echo "  Enter ${bold}(C)${normal} to Archive/Append to an ${bold}"Compact"${normal} archive."
+          echo "  Enter ${bold}(A)${normal} to Archive/Append to an ${bold}\"Normal\"${normal} archive."
+          echo "  Enter ${bold}(C)${normal} to Archive/Append to an ${bold}\"Compact\"${normal} archive."
           echo "  Enter ${bold}(O)${normal} to Archive/Append ${bold}Omitting${normal} sources,renders,maps and unused from archive."
           echo "  Enter ${bold}(S)${normal} to ${bold}Skip${normal} this project and continue to the next project."
           echo -e "  Enter ${bold}(Q)${normal} to ${bold}Quit this script${normal}.\n"
 
           while true; do
-            read -n 1 ARCHIVESELECTION
+            read -r -n 1 ARCHIVESELECTION
             case $ARCHIVESELECTION in
 
               [Aa]* )
                 echo -e " was selected: Archiving project $FLAMEPROJECT - Normal Archive\n\n"
-                $BINARY -a -P $FLAMEPROJECT -F "$ARCHIVEFILE/$FLAMEPROJECT" -N
+                $BINARY -a -P "$FLAMEPROJECT" -F "$ARCHIVEFILE/$FLAMEPROJECT" -N
                 echo -e "\n\n"
                 read -n 1 -s -r -p "Process complete.  Please review the information above.  Then press any key to continue."
                 break
@@ -99,7 +100,7 @@ else
 
               [Cc]* )
                 echo -e " was selected: Archiving project $FLAMEPROJECT - Compact Archive\n\n"
-                $BINARY -a -P $FLAMEPROJECT -F "$ARCHIVEFILE/$FLAMEPROJECT"
+                $BINARY -a -P "$FLAMEPROJECT" -F "$ARCHIVEFILE/$FLAMEPROJECT"
                 echo -e "\n\n"
                 read -n 1 -s -r -p "Process complete.  Please review the information above.  Then press any key to continue."
                 break
@@ -107,7 +108,7 @@ else
 
               [Oo]* )
                 echo -e " was selected: Archiving project $FLAMEPROJECT - omiting sources, renders, maps and unused\n\n"
-                $BINARY -a -P $FLAMEPROJECT -F "$ARCHIVEFILE/$FLAMEPROJECT" -k -O renders,sources,unused,maps
+                $BINARY -a -P "$FLAMEPROJECT" -F "$ARCHIVEFILE/$FLAMEPROJECT" -k -O renders,sources,unused,maps
                 echo -e "\n\n"
                 read -n 1 -s -r -p "Process complete.  Please review the information above.  Then press any key to continue."
                 break
@@ -129,8 +130,8 @@ else
                 clear
                 echo -e "${bold}Invalid option${normal}: $ARCHIVESELECTION key."
                 echo -e "\nPlease choose from the following options to complete the ${bold}${underline}$FLAMEPROJECT${normal} archive:"
-                echo "  Enter ${bold}(A)${normal} to Archive/Append to an ${bold}"Normal"${normal} archive."
-                echo "  Enter ${bold}(C)${normal} to Archive/Append to an ${bold}"Compact"${normal} archive."
+                echo "  Enter ${bold}(A)${normal} to Archive/Append to an ${bold}\"Normal\"${normal} archive."
+                echo "  Enter ${bold}(C)${normal} to Archive/Append to an ${bold}\"Compact\"${normal} archive."
                 echo "  Enter ${bold}(O)${normal} to Archive/Append ${bold}Omitting${normal} sources,renders,maps and unused from archive."
                 echo "  Enter ${bold}(S)${normal} to ${bold}Skip${normal} this project and continue to the next project."
                 echo -e "  Enter ${bold}(Q)${normal} to ${bold}Quit this script${normal}.\n"
