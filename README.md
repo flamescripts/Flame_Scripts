@@ -1,5 +1,5 @@
 # Flame_Scripts
-Scripts for Flame - Custom solutions for Flame affiencados.
+Scripts for Flame - Custom solutions for Flame aficionados.
 
 ## Disclaimer
 
