@@ -169,8 +169,8 @@ fi
 
 
 ## CHECK FOR INITIAL MODE
+current_mode=""
 check_current_mode "$initconfig_file" "${possible_modes[@]}"
-	local current_mode=""
 
 ## PROMPT FOR A NEW MODE SELECTION
 while true; do
@@ -251,7 +251,8 @@ case "$new_mode" in
         ;;
 esac
 
-# CHECK SELECTED MODE FOR AUDIO AND VIDEO DEVICES AND PRESENT RESULTS TO ARTIST
+# RECHECK SELECTED MODE FOR AUDIO AND VIDEO DEVICES AND PRESENT RESULTS TO ARTIST
+current_mode=""
 check_current_mode "$initconfig_file" "${possible_modes[@]}"
 
 ## FLAME ON
