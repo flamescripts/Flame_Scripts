@@ -45,7 +45,7 @@ is strongly advised as this has not been thoroughly tested.
 
 ## Requirements
 
-- sudo credentials
+- Sudo credentials will be required after launching the script, however, please avoid executing it as sudo or root.
 - Flame Family application
 
 ## Helpful Links
