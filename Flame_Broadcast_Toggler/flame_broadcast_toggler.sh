@@ -5,7 +5,7 @@
 # Name: The Flame Broadcast Toggler
 #
 # USAGE: ./flame_broadcast_toggler.sh
-# REQUIRED: sudo credentials
+# REQUIRED: sudo credentials will be required after launching the script, however, please avoid executing it as sudo or root.
 #
 # See README.md for description, disclaimer, testing environments, and caveats.
 #
