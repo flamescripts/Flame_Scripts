@@ -11,6 +11,7 @@
 #
 # Always Current Version: https://github.com/flamescripts/Flame_Scripts
 
+
 # FUNCTION TO CHECK CURRENT NODE
 function check_current_mode() {
 	local initconfig_file=$1
@@ -104,23 +105,68 @@ function toggle_broadcast() {
     printf "%s\n" "g/$search/s/.*/$replace/" w | ed -s "$broadcast_pref_file"
 }
 
+
+# FUNCTION TO GET CURRENT PROJECT AND LIST ALL PROJECTS
+function get_project() {
+    # GET MOST RECENTLY OPENED FLAME PROJECT NAME AND CREATE AN ARRAY OF ALL AVAILABLE PROJECTS
+    current_project_name=$(awk -F"[{}]" '/ProjectGroupStatus/ {print $2}' /opt/Autodesk/project/project.db | tr -d '\n';)
+    project_listing=$(/opt/Autodesk/wiretap/tools/current/wiretap_get_children -n /projects -N)
+    IFS=$'\n' read -rd '' -a project_listing_array <<<"$project_listing"
+
+    echo "Please enter an index number to select a project or press [enter] to continue using $current_project_name: "
+    # PRINT PROJECT LIST AND INDICATE CURRENT PROJECT
+    echo
+    for index in "${!project_listing_array[@]}"; do
+        if [ "${project_listing_array[$index]}" = "$current_project_name" ]; then
+            echo "$index: ${project_listing_array[$index]} <-- (Current Project)"
+        else
+            echo "$index: ${project_listing_array[$index]}"
+        fi
+    done
+
+    # PROMPT ARTIST FOR DESIRED PROJECT AND VALIDATE INPUT
+    echo
+    read -p "Project selection: " project_index
+
+    if [ -z "$project_index" ] ;then
+        clear
+        echo "$current_project_name project will continue be used."
+        echo
+    elif [[ $project_index =~ ^[0-9]+$ ]] && (( project_index >= 0 && project_index < ${#project_listing_array[@]} )); then
+        clear
+        current_project_name="${project_listing_array[$project_index]}"
+        echo "$current_project_name project will be used."
+        echo
+    else
+        clear
+        echo "Invalid project index. Exiting..."
+        exit 2
+    fi
+}
+
+# MAIN PROGRAM
+
 # GREETINGS PROGRAMS - LOGIN HERE INSTEAD OF RUNNING SCRIPT AS SUDO 
 clear
-echo "Please enter your sudo credentials to use the Flame Broadcast Toggler"
+echo "Welcome to the Flame Broadcast Toggler"
+echo
+echo "Please enter your sudo credentials to continue"
 if [ $EUID != 0 ]; then
     sudo "$0" "$@"
     exit $?
 fi
 clear
 
-# GET MOST RECENTLY OPENED FLAME PROJECT NAME, VERSION, PREFERENCE, SET BACKUP FILES AND VARIABLES
-current_project_name=$(awk -F"[{}]" '/ProjectGroupStatus/ {print $2}' /opt/Autodesk/project/project.db | tr -d '\n';)
+# GET CURRENT PROJECT AND LIST ALL PROJECTS
+get_project
+
+# GET PROJECT NAME, VERSION, PREFERENCE, SET BACKUP FILES AND VARIABLES
 current_project_stats="/opt/Autodesk/project/${current_project_name}/status/project.status"
 current_flame_family=$(awk '/# Status/ {print $(NF-1)"_"$NF}' "$current_project_stats")
 current_version=$(awk '/^# Status/ {print $NF}' "$current_project_stats")
 possible_modes=("NDI" "AJA" "BMD" "CoreAudio" "NONE")
 initconfig_file="/opt/Autodesk/${current_flame_family}/cfg/init.cfg"
-flame_binary="/opt/Autodesk/${current_flame_family}/bin/startApplication"
+flame_binary="/opt/Autodesk/${current_flame_family}/bin/startApplication --start-project=$current_project_name"
 broadcast_pref_file="/opt/Autodesk/project/$current_project_name/status/broadcastCurrent.pref"
 initconfig_backups=("$initconfig_file".bak_*)
 broadcast_pref_backups=("$broadcast_pref_file".bak_*)
@@ -136,14 +182,14 @@ if [[ ! -f "$current_project_stats" || ! -f "$initconfig_file" || ! -f "$broadca
     echo "- $current_project_stats";echo
     echo "$current_flame_family Init configuration file:"
     echo "- $initconfig_file";echo
-    exit 1
+    exit 3
 else
     # IF PRESENT, BACKUP THE CONFIG FILES
     echo "Backing up the Flame Family $current_version init.cfg:"
     sudo tar -czpPf $initconfig_file.bak_$(date +%m%d%Y_%H%M).tar.gz $initconfig_file
     echo "$initconfig_file.bak_$(date +%m%d%Y_%H%M).tar.gz"
     echo
-    echo "Backing up current $current_project_name project broadcast preferences:"
+    echo "Backing up current '$current_project_name' project broadcast preferences:"
     echo "$broadcast_pref_file.bak_$(date +%m%d%Y_%H%M).tar.gz"
     sudo tar -czpPf $broadcast_pref_file.bak_$(date +%m%d%Y_%H%M).tar.gz $broadcast_pref_file
 
@@ -154,14 +200,14 @@ else
     if (( num_initconfig_backups > max_backup_files )); then
         excess_initconfig_backups=$(( num_initconfig_backups - max_backup_files ))
         oldest_initconfig_backups=("${initconfig_backups[@]:0:$excess_initconfig_backups}")
-        echo "The following older $current_project_name init.cfg backups will be removed:"
+        echo "The following older '$current_project_name' init.cfg backups will be removed:"
         sudo rm -v "${oldest_initconfig_backups[@]}"
         echo
     fi
     if (( num_broadcast_pref_backups > max_backup_files )); then
         excess_broadcast_pref_backups=$(( num_broadcast_pref_backups - max_backup_files ))
         oldest_broadcast_pref_backups=("${broadcast_pref_backups[@]:0:$excess_broadcast_pref_backups}")
-        echo "The following older $current_project_name broadcast preferences backups will be removed:"
+        echo "The following older '$current_project_name' broadcast preferences backups will be removed:"
         sudo rm -v "${oldest_broadcast_pref_backups[@]}"
         echo
     fi
@@ -247,7 +293,7 @@ case "$new_mode" in
         ;;
     *)
         echo "Invalid mode: $new_mode"
-        exit 1
+        exit 4
         ;;
 esac
 
@@ -260,8 +306,8 @@ echo "Would you like to launch $current_flame_family?" | sed -e 's,_, ,g'
 read -n 1 -r -p "Press Y for Yes or press any key to exit: " launch_flame
 if [[ $launch_flame =~ ^[Yy]$ ]]; then
 	clear
-	echo "Launching $current_flame_family in $new_mode mode"
+	echo "Launching $current_flame_family in $new_mode mode using project $current_project_name as the $SUDO_USER user"
 	sleep 2
-	$flame_binary
+	sudo -u $SUDO_USER bash -c "$flame_binary"
 	exit 0
 fi
