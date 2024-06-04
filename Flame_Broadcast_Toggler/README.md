@@ -19,7 +19,7 @@ The default value is 5.
 
 **Note:** The available modes may require adjustments to accommodate specific hardware devices
 such as 'AJA_IO4K_PLUS', splitting the Audio and Video device output, or using Pulse.  Email 
-me if you have a need for these to be added.
+me if you have a need for these to be added.  2025 compatable version coming soon.
 
 ## Disclaimer
 
@@ -46,7 +46,8 @@ is strongly advised as this has not been thoroughly tested.
 ## Requirements
 
 - Sudo credentials will be required after launching the script, however, please avoid executing it as sudo or root.
-- Flame Family application
+- Flame Family application (Pre 2025 release)
+
 
 ## Helpful Links
 
