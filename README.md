@@ -1,10 +1,10 @@
-# Flame_Scripts
 Scripts for Flame - Custom solutions for Flame aficionados.
 <br />
 <br />
 **Update**: Existing projects have been seperated and migrated into individual repos which have been linked below:
 <br /><br />
 ## Flame Projects ##
+
 ### Flame Broadcast Toggler
 A simple utility to retrieve project information, select broadcast options (NDI, AJA, BMD, CoreAudio, NONE), and automatically apply settings to Video, Audio, and Preview Devices in Flame Setup. Adjusts Broadcast Preferences accordingly while keeping other settings unchanged.<br />
 [The Flame Broadcast Toggler Repo](https://github.com/flamescripts/Flame_Broadcast_Toggler)<br /><br />
@@ -27,6 +27,12 @@ Kickstart files to bypass installation issues that may occur when booting from u
 ### Flame Strace
 Automated strace script to assist with 'micro freezes' and testing. if you are wondering what the purpose is, you are likley not the target audience.<br />
 [Flame_Strace Repo](https://github.com/flamescripts/Flame_Strace)<br /><br />
+
+## ShotGrid Projects ##
+### Flow Production Tracking FQDN Checker
+This Python 3 script checks if a list of Fully Qualified Domain Names (FQDNs) can connect to port 443. It uses the FQDNs from the FPT Ecosystem help page and tries to establish a socket connection for each one. The script then shows which FQDNs successfully connected to port 443 and which did not.<br />
+[The Flame Broadcast Toggler Repo](https://github.com/flamescripts/FlowProductionTracking)<br /><br />
+
 
 ## Non Flame Projects
 
