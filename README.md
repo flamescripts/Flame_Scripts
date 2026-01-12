@@ -31,12 +31,21 @@ Automated strace script to assist with 'micro freezes' and testing. if you are w
 ## ShotGrid Projects ##
 
 ### Flow Production Combined URL Checker *
-This Python 3 script checks if a list of Fully Qualified Domain Names (FQDNs), Autodesk Subscription URLs and Autodesk Identity URLs can connect to a port of your selection. It uses the data from the FPT Ecosystem help page, "Which URLs/Protocols need to be allowed for Autodesk Subscription Licensing" page and the "Which URLs/Protocols need to be allowed for Autodesk Identity Manager" help page.  The script attempts to establish a socket connection for each one. The script then shows which URLs successfully connected to the selected port and which did not.  Curl is used for the sitename check.
+This Python 3 script checks if a list of Fully Qualified Domain Names (FQDNs), Autodesk Subscription URLs and Autodesk Identity URLs can connect to a port of your selection. It uses the data from the FPT Ecosystem help page, "Which URLs/Protocols need to be allowed for Autodesk Subscription Licensing" page and the "Which URLs/Protocols need to be allowed for Autodesk Identity Manager" help page.  The script attempts to establish a socket connection for each one. The script then shows which URLs successfully connected to the selected port and which did not.  Curl is used for the sitename check.<br />
+[Flow Production Tracking Combined URL Checker](https://github.com/flamescripts/FlowProductionTracking/tree/main/Flow_Combined_URL_Checker)<br /><br />
+
 
 ### Flow Production Tracking FQDN Checker
 This Python 3 script checks if a list of Fully Qualified Domain Names (FQDNs) can connect to port 443. It uses the FQDNs from the FPT Ecosystem help page and tries to establish a socket connection for each one. The script then shows which FQDNs successfully connected to port 443 and which did not.<br />
-[Flow Production Tracking Repo](https://github.com/flamescripts/FlowProductionTracking)<br /><br />
+[Flow Production Tracking FQDN Checker](https://github.com/flamescripts/FlowProductionTracking/tree/main/Flow_FQDN_Checker)<br /><br />
 
+### Flow Production Tracking API Create User
+Creating user accounts with a Python script in the Flow Production Tracking API:
+- Replace <XXX> in the script with your site url and user credentials.
+- The auth_token lines can be commented (#) out for Flow sites with 2FA turned off.
+	- If removing the auth_token line, also remove the preceeding comma.
+- Modify the sg.create string to fit the intended workflow.<br />
+[Flow Production Tracking API Create User](https://github.com/flamescripts/FlowProductionTracking/tree/main/API)<br /><br />
 
 ## Non Flame Projects
 
